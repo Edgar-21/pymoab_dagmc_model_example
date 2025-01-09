@@ -4,7 +4,9 @@ import numpy as np
 
 mb = core.Core()
 model = dagmc.DAGModel(mb)
+group = dagmc.Group.create(model, name="iron", group_id=1)
 volume = dagmc.Volume.create(model, 1)
+group.add_set(volume)
 # Step 1: Create vertices for a unit cube (x, y, z)
 vertices_coords = np.array(
     [
@@ -27,7 +29,7 @@ vertices = mb.create_vertices(vertices_coords)
 tri_faces = [
     # Bottom face (z = 0)
     (vertices[0], vertices[1], vertices[2]),
-    (vertices[0], vertices[2], vertices[3]),
+    (vertices[3], vertices[2], vertices[0]),
     # Top face (z = 1)
     (vertices[4], vertices[5], vertices[6]),
     (vertices[4], vertices[6], vertices[7]),
@@ -47,35 +49,23 @@ tri_faces = [
 
 triangles = [mb.create_element(types.MBTRI, face) for face in tri_faces]
 
-# Step 3: Group triangles into surface sets
 surface_sets = []
 surf_objs = []
 for i in range(6):
-    surface_set = mb.create_meshset()
-    mb.add_entities(
-        surface_set, triangles[i * 2 : i * 2 + 2]
-    )  # Add 2 triangles per surface
-
-    # Tag surface sets with GEOM_DIMENSION = 2
-    geom_dim_tag = mb.tag_get_handle(
-        "GEOM_DIMENSION",
-        1,
-        types.MB_TYPE_INTEGER,
-        types.MB_TAG_DENSE,
-        create_if_missing=True,
-    )
-    mb.tag_set_data(geom_dim_tag, surface_set, 2)
-
-    surface_sets.append(surface_set)
     surface = dagmc.Surface.create(model, i + 1)
-    surface.handle = surface_set
+    mb.add_entities(surface.handle, triangles[i * 2 : i * 2 + 2])
     surface.surf_sense = [volume, None]
 
-print(model.surfaces)
-# Link the surfaces as children of the volume
 for surface in model.surfaces:
     mb.add_parent_child(volume.handle, surface.handle)
 
 print(model.volumes)
 print(model.surfaces)
 model.write_file("example.vtk")
+model.write_file("example.stl")
+model.write_file("example.h5m")
+# this is coming out to be 0.33333 for some reason, should be 1 i reckon
+print(model.volumes[0].volume)
+for surf in model.surfaces:
+    print(surf.surf_sense)
+print(model.groups)
