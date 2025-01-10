@@ -37,8 +37,8 @@ tri_faces = [
     (vertices[0], vertices[1], vertices[5]),
     (vertices[0], vertices[5], vertices[4]),
     # Back face (y = 1)
-    (vertices[3], vertices[2], vertices[6]),
-    (vertices[3], vertices[6], vertices[7]),
+    (vertices[6], vertices[2], vertices[3]),
+    (vertices[7], vertices[6], vertices[3]),
     # Left face (x = 0)
     (vertices[0], vertices[3], vertices[7]),
     (vertices[0], vertices[7], vertices[4]),
@@ -64,7 +64,6 @@ print(model.surfaces)
 model.write_file("example.vtk")
 model.write_file("example.stl")
 model.write_file("example.h5m")
-# this is coming out to be 0.33333 for some reason, should be 1 i reckon
 print(model.volumes[0].volume)
 for surf in model.surfaces:
     print(surf.surf_sense)
