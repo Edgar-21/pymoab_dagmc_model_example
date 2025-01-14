@@ -53,12 +53,12 @@ cube_2_verts = mb.create_vertices(cube_2_vertices_coords)
 surface_verts = [
     # bottom faces, 0,1
     [
-        (cube_1_verts[0], cube_1_verts[1], cube_1_verts[2]),
-        (cube_1_verts[0], cube_1_verts[2], cube_1_verts[3]),
+        (cube_1_verts[0], cube_1_verts[2], cube_1_verts[1]),
+        (cube_1_verts[0], cube_1_verts[3], cube_1_verts[2]),
     ],
     [
-        (cube_2_verts[0], cube_2_verts[1], cube_2_verts[2]),
-        (cube_2_verts[0], cube_2_verts[2], cube_2_verts[3]),
+        (cube_2_verts[0], cube_2_verts[2], cube_2_verts[1]),
+        (cube_2_verts[0], cube_2_verts[3], cube_2_verts[2]),
     ],
     # top faces, 2,3
     [
@@ -89,8 +89,8 @@ surface_verts = [
     ],
     # outside faces 8,9
     [
-        (cube_1_verts[0], cube_1_verts[3], cube_1_verts[7]),
-        (cube_1_verts[0], cube_1_verts[7], cube_1_verts[4]),
+        (cube_1_verts[0], cube_1_verts[7], cube_1_verts[3]),
+        (cube_1_verts[0], cube_1_verts[4], cube_1_verts[7]),
     ],
     [
         (cube_2_verts[5], cube_2_verts[1], cube_2_verts[2]),
@@ -130,5 +130,5 @@ for surf in model.surfaces:
 for vol in model.volumes:
     print(vol, vol.volume)
 
-model.write_file("2_cubes.vtk")
-model.write_file("two_cubes_pydagmc.h5m")
+model.write_file("2_cube_example.vtk")
+model.write_file("2_cube_example.h5m")

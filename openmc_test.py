@@ -1,7 +1,7 @@
 import openmc
 
 model = openmc.model.Model()
-dagmc_model_file = "example.h5m"
+dagmc_model_file = "2_cube_example.h5m"
 
 materials = openmc.Materials()
 
@@ -26,14 +26,14 @@ geometry = openmc.Geometry([vac_cell])
 model.geometry = geometry
 
 source = openmc.Source()
-source.space = openmc.stats.Point((9, 5, 5))  # Location of the source
+source.space = openmc.stats.Point((5, 5, 5))  # Location of the source
 source.angle = openmc.stats.Isotropic()  # Isotropic source
 
 settings = openmc.Settings()
 settings.run_mode = "fixed source"
 settings.source = [source]
 settings.particles = 10
-settings.batches = 1
+settings.batches = 10
 
 model.settings = settings
 

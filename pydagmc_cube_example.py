@@ -59,12 +59,5 @@ for i in range(6):
     mb.add_entities(surface.handle, triangles[i * 2 : i * 2 + 2])
     surface.surf_sense = [volume, None]
 
-print(model.volumes)
-print(model.surfaces)
-model.write_file("example.vtk")
-model.write_file("example.stl")
-model.write_file("example.h5m")
-print(model.volumes[0].volume)
-for surf in model.surfaces:
-    print(surf.surf_sense)
-print(model.groups)
+model.write_file("cube_example.vtk")
+model.write_file("cube_example.h5m")
