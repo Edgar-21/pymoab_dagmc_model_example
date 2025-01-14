@@ -32,7 +32,7 @@ vertices = mb.create_vertices(vertices_coords)
 tri_faces = [
     # Bottom face (z = 0)
     (vertices[0], vertices[1], vertices[2]),
-    (vertices[3], vertices[2], vertices[0]),
+    (vertices[0], vertices[2], vertices[3]),
     # Top face (z = 1)
     (vertices[4], vertices[5], vertices[6]),
     (vertices[4], vertices[6], vertices[7]),
@@ -40,8 +40,8 @@ tri_faces = [
     (vertices[0], vertices[1], vertices[5]),
     (vertices[0], vertices[5], vertices[4]),
     # Back face (y = 1)
-    (vertices[6], vertices[2], vertices[3]),
-    (vertices[7], vertices[6], vertices[3]),
+    (vertices[3], vertices[2], vertices[6]),
+    (vertices[3], vertices[6], vertices[7]),
     # Left face (x = 0)
     (vertices[0], vertices[3], vertices[7]),
     (vertices[0], vertices[7], vertices[4]),
