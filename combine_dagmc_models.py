@@ -194,7 +194,7 @@ def apply_group_information(all_models, merged_model, volume_map):
 
 def merge_dagmc_models(all_models):
     """merges a list of dagmc.DAGModels into a single instance. These models
-    should not be self intersecting.
+    should not intersect each other.
 
     Arguments:
         all_models (list of dagmc.DAGModel): Models to be merged.
