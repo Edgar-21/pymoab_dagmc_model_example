@@ -1,5 +1,6 @@
 import dagmc
 from pymoab import core, types
+import argparse
 
 
 def duplicate_vertices(src_mb, dst_mb, vertices):
@@ -191,14 +192,19 @@ def apply_group_information(all_models, merged_model, volume_map):
             new_group.add_set(merged_volume)
 
 
-def main():
+def merge_dagmc_models(all_models):
+    """merges a list of dagmc.DAGModels into a single instance. These models
+    should not be self intersecting.
+
+    Arguments:
+        all_models (list of dagmc.DAGModel): Models to be merged.
+
+    Returns:
+        merged_model (dagmc.DAGModel): Model containing the surfaces, volumes,
+            and groups from the models to be merged.
+    """
     mbc = core.Core()
     merged_model = dagmc.DAGModel(mbc)
-
-    origin_cube = dagmc.DAGModel("origin_cube.h5m")
-    shifted_cube = dagmc.DAGModel("two_cubes_shifted.h5m")
-
-    all_models = [origin_cube, shifted_cube]
 
     vertex_map, merged_vertices = build_vertex_map(all_models, merged_model)
     surface_map = build_surface_map(
@@ -208,7 +214,27 @@ def main():
     apply_surface_sense(surface_map, volume_map, merged_model)
     apply_group_information(all_models, merged_model, volume_map)
 
-    merged_model.write_file("merged.vtk")
+    return merged_model
+
+
+def parse_args():
+    """Parser for running as a script"""
+    parser = argparse.ArgumentParser(prog="combine_dagmc_models")
+    parser.add_argument(
+        "-f",
+        "--files",
+        nargs="+",
+        help="Space separated list of dagmc models to merge",
+        required=True,
+    )
+    return parser.parse_args()
+
+
+def main():
+
+    args = parse_args()
+    all_models = [dagmc.DAGModel(file) for file in args.files]
+    merged_model = merge_dagmc_models(all_models)
     merged_model.write_file("merged.h5m")
 
 
